@@ -2,6 +2,7 @@ import express from 'express';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { ingredientsRouter } from './routes/ingredients.js';
+import { matrixRouter } from './routes/matrix.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -10,6 +11,7 @@ export function createApp() {
   app.use(express.static(path.join(__dirname, '..', 'public')));
   app.use(express.json());
   app.use('/api/ingredients', ingredientsRouter);
+  app.use('/api/matrix', matrixRouter);
   return app;
 }
 
