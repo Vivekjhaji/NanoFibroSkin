@@ -105,6 +105,12 @@ const detailSection = document.getElementById('detail-section');
 const detailContent = document.getElementById('detail-content');
 const closeDetailBtn = document.getElementById('close-detail');
 
+function escapeHtml(str) {
+  const div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
+
 async function loadIngredientDetail(id) {
   const res = await fetch(`/api/ingredients/${id}`);
   if (!res.ok) {
@@ -116,19 +122,20 @@ async function loadIngredientDetail(id) {
 
 function renderTarget(target) {
   const pathologyList = target.pathologies.length
-    ? target.pathologies.join(', ')
+    ? target.pathologies.map(escapeHtml).join(', ')
     : 'no known pathology link';
   const sourceList = target.sources
-    .map((s) => `${s.sourceDbName}${s.pmids.length ? ` (PMID ${s.pmids.join(', ')})` : ''}`)
+    .map((s) => `${escapeHtml(s.sourceDbName)}${s.pmids.length ? ` (PMID ${s.pmids.join(', ')})` : ''}`)
     .join('; ');
   const stringList = target.stringPartners
-    .map((p) => `${p.partnerName} (${p.score.toFixed(2)})`)
+    .map((p) => `${escapeHtml(p.partnerName)} (${p.score.toFixed(2)})`)
     .join(', ');
+  const interactionTypes = target.interactionTypes.map(escapeHtml).join(', ') || 'unspecified';
 
   return `
     <div class="target-card">
-      <h3>${target.geneSymbol}${target.uniprot ? ` — ${target.uniprot.proteinName}` : ''}</h3>
-      <p><strong>Interaction:</strong> ${target.interactionTypes.join(', ') || 'unspecified'}${target.score !== null ? ` (score ${target.score.toFixed(2)})` : ''}</p>
+      <h3>${escapeHtml(target.geneSymbol)}${target.uniprot ? ` — ${escapeHtml(target.uniprot.proteinName)}` : ''}</h3>
+      <p><strong>Interaction:</strong> ${interactionTypes}${target.score !== null ? ` (score ${target.score.toFixed(2)})` : ''}</p>
       <p><strong>Pathology:</strong> ${pathologyList}</p>
       ${sourceList ? `<p><strong>Evidence:</strong> ${sourceList}</p>` : ''}
       ${stringList ? `<p><strong>STRING interactors:</strong> ${stringList}</p>` : ''}
@@ -138,7 +145,7 @@ function renderTarget(target) {
 
 function renderIngredientDetail(detail, focusPathology) {
   if (detail.error) {
-    detailContent.innerHTML = `<p class="error">${detail.error}</p>`;
+    detailContent.innerHTML = `<p class="error">${escapeHtml(detail.error)}</p>`;
     detailSection.hidden = false;
     return;
   }
@@ -147,10 +154,10 @@ function renderIngredientDetail(detail, focusPathology) {
     : detail.targets;
 
   detailContent.innerHTML = `
-    <h2>${detail.name}</h2>
-    <p><strong>Prep:</strong> ${detail.prep}</p>
-    <p><strong>Role:</strong> ${detail.role}</p>
-    ${focusPathology ? `<p class="focus-note">Showing targets linked to ${focusPathology}</p>` : ''}
+    <h2>${escapeHtml(detail.name)}</h2>
+    <p><strong>Prep:</strong> ${escapeHtml(detail.prep)}</p>
+    <p><strong>Role:</strong> ${escapeHtml(detail.role)}</p>
+    ${focusPathology ? `<p class="focus-note">Showing targets linked to ${escapeHtml(focusPathology)}</p>` : ''}
     ${targets.length ? targets.map(renderTarget).join('') : '<p>No target evidence found for this view.</p>'}
   `;
   detailSection.hidden = false;
