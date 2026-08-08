@@ -1,7 +1,7 @@
 import express from 'express';
 import { INGREDIENTS } from '../ingredients.js';
 import { classifyGene } from '../pathologyMap.js';
-import { getInteractionsForDrug, getInteractionsForGene } from '../clients/dgidb.js';
+import { getInteractionsForDrug } from '../clients/dgidb.js';
 import { getProteinInfo } from '../clients/uniprot.js';
 import { getInteractionPartners } from '../clients/string.js';
 
