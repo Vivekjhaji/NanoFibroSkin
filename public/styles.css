@@ -77,3 +77,22 @@ td:hover { cursor: pointer; background: var(--card-bg); }
   border-radius: 4px;
   padding: 16px 20px;
 }
+
+.target-card {
+  border-top: 1px solid var(--rule);
+  padding-top: 10px;
+  margin-top: 10px;
+  font-size: 14px;
+}
+.target-card h3 { margin: 0 0 6px; font-size: 15px; }
+.target-card p { margin: 4px 0; color: var(--ink-soft); }
+.focus-note { color: var(--accent); font-size: 13px; }
+.error { color: var(--flag); }
+#close-detail {
+  float: right;
+  background: none;
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+  cursor: pointer;
+  padding: 4px 10px;
+}

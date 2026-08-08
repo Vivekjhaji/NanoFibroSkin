@@ -99,3 +99,75 @@ async function init() {
 refreshBtn.addEventListener('click', init);
 
 init();
+
+// Detail panel functions
+const detailSection = document.getElementById('detail-section');
+const detailContent = document.getElementById('detail-content');
+const closeDetailBtn = document.getElementById('close-detail');
+
+async function loadIngredientDetail(id) {
+  const res = await fetch(`/api/ingredients/${id}`);
+  if (!res.ok) {
+    const body = await res.json().catch(() => ({}));
+    return { error: body.error || 'failed to load ingredient detail' };
+  }
+  return res.json();
+}
+
+function renderTarget(target) {
+  const pathologyList = target.pathologies.length
+    ? target.pathologies.join(', ')
+    : 'no known pathology link';
+  const sourceList = target.sources
+    .map((s) => `${s.sourceDbName}${s.pmids.length ? ` (PMID ${s.pmids.join(', ')})` : ''}`)
+    .join('; ');
+  const stringList = target.stringPartners
+    .map((p) => `${p.partnerName} (${p.score.toFixed(2)})`)
+    .join(', ');
+
+  return `
+    <div class="target-card">
+      <h3>${target.geneSymbol}${target.uniprot ? ` — ${target.uniprot.proteinName}` : ''}</h3>
+      <p><strong>Interaction:</strong> ${target.interactionTypes.join(', ') || 'unspecified'}${target.score !== null ? ` (score ${target.score.toFixed(2)})` : ''}</p>
+      <p><strong>Pathology:</strong> ${pathologyList}</p>
+      ${sourceList ? `<p><strong>Evidence:</strong> ${sourceList}</p>` : ''}
+      ${stringList ? `<p><strong>STRING interactors:</strong> ${stringList}</p>` : ''}
+    </div>
+  `;
+}
+
+function renderIngredientDetail(detail, focusPathology) {
+  if (detail.error) {
+    detailContent.innerHTML = `<p class="error">${detail.error}</p>`;
+    detailSection.hidden = false;
+    return;
+  }
+  const targets = focusPathology
+    ? detail.targets.filter((t) => t.pathologies.includes(focusPathology))
+    : detail.targets;
+
+  detailContent.innerHTML = `
+    <h2>${detail.name}</h2>
+    <p><strong>Prep:</strong> ${detail.prep}</p>
+    <p><strong>Role:</strong> ${detail.role}</p>
+    ${focusPathology ? `<p class="focus-note">Showing targets linked to ${focusPathology}</p>` : ''}
+    ${targets.length ? targets.map(renderTarget).join('') : '<p>No target evidence found for this view.</p>'}
+  `;
+  detailSection.hidden = false;
+}
+
+matrixTable.addEventListener('click', async (event) => {
+  const cell = event.target.closest('td[data-ingredient-id]');
+  const nameCell = event.target.closest('th.ingredient-name');
+  if (cell) {
+    const detail = await loadIngredientDetail(cell.dataset.ingredientId);
+    renderIngredientDetail(detail, cell.dataset.pathology);
+  } else if (nameCell) {
+    const detail = await loadIngredientDetail(nameCell.dataset.ingredientId);
+    renderIngredientDetail(detail, null);
+  }
+});
+
+closeDetailBtn.addEventListener('click', () => {
+  detailSection.hidden = true;
+});
