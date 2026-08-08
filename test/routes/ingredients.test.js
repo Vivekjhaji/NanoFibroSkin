@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createApp } from '../../server/index.js';
 
-test('GET /api/ingredients lists all 8 ingredients without upstream data', async () => {
+test('GET /api/ingredients lists all 9 ingredients without upstream data', async () => {
   const app = createApp();
   const server = app.listen(0);
   const port = server.address().port;
@@ -10,7 +10,7 @@ test('GET /api/ingredients lists all 8 ingredients without upstream data', async
   const body = await res.json();
   server.close();
   assert.equal(res.status, 200);
-  assert.equal(body.length, 8);
+  assert.equal(body.length, 9);
   assert.ok(body[0].id);
   assert.equal(body[0].targets, undefined);
 });

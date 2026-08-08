@@ -63,4 +63,12 @@ export const INGREDIENTS = [
     role: 'Angiogenic modulator (HIF-1α stabilizer)',
     lookupName: 'deferoxamine',
   },
+  {
+    id: 'resveratrol',
+    name: 'Resveratrol',
+    kind: 'compound',
+    prep: 'Botanical extract (grape/berry skin or Polygonum cuspidatum root)',
+    role: 'Phytochemical modulator (angiogenic/antioxidant)',
+    lookupName: 'resveratrol',
+  },
 ];

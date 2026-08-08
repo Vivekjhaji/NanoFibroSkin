@@ -2,8 +2,8 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { INGREDIENTS } from '../server/ingredients.js';
 
-test('exactly 8 ingredients are defined', () => {
-  assert.equal(INGREDIENTS.length, 8);
+test('exactly 9 ingredients are defined', () => {
+  assert.equal(INGREDIENTS.length, 9);
 });
 
 test('every ingredient has required fields', () => {

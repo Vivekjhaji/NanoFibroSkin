@@ -14,7 +14,7 @@ test('GET /api/matrix returns a full coverage matrix', async () => {
   assert.deepEqual(body.pathologies, [
     'Inflammation', 'Oxidative Stress', 'Angiogenesis', 'Infection', 'ECM',
   ]);
-  assert.equal(body.ingredients.length, 8);
+  assert.equal(body.ingredients.length, 9);
 
   for (const ingredientId of body.ingredients) {
     for (const pathology of body.pathologies) {
