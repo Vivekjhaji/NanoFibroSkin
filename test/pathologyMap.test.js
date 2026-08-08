@@ -32,3 +32,10 @@ test('every table entry only references the 5 fixed pathologies', () => {
     }
   }
 });
+
+test('every pathology is reachable by at least one gene in the table', () => {
+  const coveredPathologies = new Set(Object.values(GENE_PATHOLOGY_TABLE).flat());
+  for (const pathology of PATHOLOGIES) {
+    assert.ok(coveredPathologies.has(pathology), `no gene maps to pathology "${pathology}"`);
+  }
+});

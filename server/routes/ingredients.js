@@ -17,8 +17,9 @@ ingredientsRouter.get('/:id', async (req, res) => {
   }
 
   try {
-    const targets = await enrichIngredient(ingredient);
-    res.json({ ...ingredient, targets });
+    const { targets, pubchemCid } = await enrichIngredient(ingredient);
+    const { id, name, kind, prep, role } = ingredient;
+    res.json({ id, name, kind, prep, role, targets, pubchemCid });
   } catch (err) {
     res.status(502).json({ error: `Upstream lookup failed: ${err.message}` });
   }

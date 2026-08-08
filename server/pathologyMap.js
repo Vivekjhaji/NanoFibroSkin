@@ -34,6 +34,13 @@ export const GENE_PATHOLOGY_TABLE = {
   FGG: ['ECM'],
   HAS2: ['ECM', 'Inflammation'],
   CD44: ['Inflammation', 'ECM'],
+  CAMP: ['Infection'],
+  DEFB4A: ['Infection'],
+  LCN2: ['Infection'],
+  LTF: ['Infection'],
+  TLR4: ['Infection'],
+  MPO: ['Infection'],
+  NLRP3: ['Infection', 'Inflammation'],
 };
 
 export function classifyGene(geneSymbol) {

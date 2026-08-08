@@ -2,6 +2,9 @@ import express from 'express';
 import { INGREDIENTS } from '../ingredients.js';
 import { PATHOLOGIES } from '../pathologyMap.js';
 import { enrichIngredient } from '../ingredientEnrichment.js';
+import { mapWithConcurrency } from '../concurrencyLimit.js';
+
+const INGREDIENT_BATCH_SIZE = 3;
 
 const STRONG_SCORE_THRESHOLD = 0.5;
 
@@ -21,11 +24,13 @@ export const matrixRouter = express.Router();
 
 matrixRouter.get('/', async (req, res) => {
   try {
-    const enriched = await Promise.all(
-      INGREDIENTS.map(async (ingredient) => ({
-        id: ingredient.id,
-        targets: await enrichIngredient(ingredient),
-      }))
+    const enriched = await mapWithConcurrency(
+      INGREDIENTS,
+      INGREDIENT_BATCH_SIZE,
+      async (ingredient) => {
+        const { targets } = await enrichIngredient(ingredient);
+        return { id: ingredient.id, targets };
+      }
     );
 
     const cells = {};

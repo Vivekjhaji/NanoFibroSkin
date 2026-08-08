@@ -27,6 +27,8 @@ test('GET /api/ingredients/:id returns targets with pathology classification', a
   assert.ok(Array.isArray(body.targets));
   assert.ok(body.targets.length > 0);
   assert.ok(Array.isArray(body.targets[0].pathologies));
+  assert.equal(typeof body.pubchemCid, 'number');
+  assert.equal(body.lookupName, undefined);
 });
 
 test('GET /api/ingredients/:id returns 404 for unknown id', async () => {

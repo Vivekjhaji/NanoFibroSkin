@@ -2,6 +2,7 @@ import { classifyGene } from './pathologyMap.js';
 import { getInteractionsForDrug } from './clients/dgidb.js';
 import { getProteinInfo } from './clients/uniprot.js';
 import { getInteractionPartners } from './clients/string.js';
+import { getCid } from './clients/pubchem.js';
 
 const MAX_TARGETS_PER_INGREDIENT = 6;
 
@@ -25,23 +26,28 @@ export async function enrichIngredient(ingredient) {
   if (ingredient.kind === 'protein') {
     const info = await getProteinInfo(ingredient.lookupName).catch(() => null);
     const stringPartners = await getInteractionPartners(ingredient.lookupName, 6).catch(() => []);
-    return [
-      {
-        geneSymbol: ingredient.lookupName,
-        interactionTypes: ['structural'],
-        score: null,
-        sources: [],
-        pathologies: classifyGene(ingredient.lookupName),
-        uniprot: info,
-        stringPartners,
-      },
-    ];
+    return {
+      targets: [
+        {
+          geneSymbol: ingredient.lookupName,
+          interactionTypes: ['structural'],
+          score: null,
+          sources: [],
+          pathologies: classifyGene(ingredient.lookupName),
+          uniprot: info,
+          stringPartners,
+        },
+      ],
+      pubchemCid: undefined,
+    };
   }
-  const interactions = (await getInteractionsForDrug(ingredient.lookupName)).slice(
-    0,
-    MAX_TARGETS_PER_INGREDIENT
-  );
-  return Promise.all(
+  const [interactionsRaw, pubchemCid] = await Promise.all([
+    getInteractionsForDrug(ingredient.lookupName),
+    getCid(ingredient.lookupName).catch(() => null),
+  ]);
+  const interactions = interactionsRaw.slice(0, MAX_TARGETS_PER_INGREDIENT);
+  const targets = await Promise.all(
     interactions.map((i) => buildTargetEntry(i.partnerName, i.interactionTypes, i.score, i.sources))
   );
+  return { targets, pubchemCid };
 }
