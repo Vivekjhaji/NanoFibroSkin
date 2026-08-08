@@ -6,8 +6,24 @@
   <link rel="stylesheet" href="/styles.css" />
 </head>
 <body>
-  <h1>NanoFibroSkin Mechanism Plausibility Sandbox</h1>
-  <div id="app"></div>
+  <header>
+    <h1>NanoFibroSkin Mechanism Plausibility Sandbox</h1>
+    <p class="subtitle">Protein-level target evidence for the 9 hydrogel ingredients against the 5 DFU pathologies. Decision support only — not a prediction of healing outcomes.</p>
+    <button id="refresh-btn">Refresh targets from DB</button>
+    <span id="status"></span>
+  </header>
+
+  <main>
+    <section id="matrix-section">
+      <table id="matrix-table"></table>
+      <div id="gap-callout"></div>
+    </section>
+    <section id="detail-section" hidden>
+      <button id="close-detail">&times; Close</button>
+      <div id="detail-content"></div>
+    </section>
+  </main>
+
   <script type="module" src="/app.js"></script>
 </body>
 </html>

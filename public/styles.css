@@ -1,1 +1,79 @@
-body { font-family: sans-serif; margin: 0; padding: 24px; }
+:root {
+  --bg: #f7f5f0;
+  --ink: #1c1a17;
+  --ink-soft: #46423a;
+  --accent: #5f7052;
+  --flag: #a8433a;
+  --rule: #d9d4c7;
+  --card-bg: #fffdf8;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #171613;
+    --ink: #ece8de;
+    --ink-soft: #b7b1a2;
+    --accent: #8fa47c;
+    --flag: #d17569;
+    --rule: #34322b;
+    --card-bg: #201e1a;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #171613; --ink: #ece8de; --ink-soft: #b7b1a2;
+  --accent: #8fa47c; --flag: #d17569; --rule: #34322b; --card-bg: #201e1a;
+}
+:root[data-theme="light"] {
+  --bg: #f7f5f0; --ink: #1c1a17; --ink-soft: #46423a;
+  --accent: #5f7052; --flag: #a8433a; --rule: #d9d4c7; --card-bg: #fffdf8;
+}
+
+* { box-sizing: border-box; }
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: -apple-system, "Segoe UI", sans-serif;
+  margin: 0;
+  padding: 24px 32px 64px;
+}
+header { max-width: 720px; margin-bottom: 24px; }
+.subtitle { color: var(--ink-soft); font-size: 14px; }
+#status { font-size: 13px; color: var(--ink-soft); margin-left: 12px; }
+
+#matrix-table {
+  border-collapse: collapse;
+  width: 100%;
+  max-width: 900px;
+}
+#matrix-table th, #matrix-table td {
+  border: 1px solid var(--rule);
+  padding: 8px 12px;
+  text-align: center;
+  font-size: 14px;
+}
+#matrix-table thead th { background: var(--card-bg); font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em; }
+.ingredient-name { text-align: left; cursor: pointer; background: var(--card-bg); }
+.ingredient-name:hover { color: var(--accent); }
+.gap-column { color: var(--flag); }
+.orphan-row { color: var(--flag); }
+td.cell-strong { color: var(--accent); font-weight: 700; }
+td.cell-weak { color: var(--ink-soft); }
+td.cell-none { color: var(--rule); }
+td:hover { cursor: pointer; background: var(--card-bg); }
+
+#gap-callout {
+  margin-top: 12px;
+  padding: 10px 14px;
+  border-left: 3px solid var(--flag);
+  background: var(--card-bg);
+  font-size: 13px;
+  max-width: 700px;
+}
+
+#detail-section {
+  margin-top: 24px;
+  max-width: 700px;
+  background: var(--card-bg);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  padding: 16px 20px;
+}
