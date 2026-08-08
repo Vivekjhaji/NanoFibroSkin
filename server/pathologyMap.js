@@ -41,6 +41,10 @@ export const GENE_PATHOLOGY_TABLE = {
   TLR4: ['Infection'],
   MPO: ['Infection'],
   NLRP3: ['Infection', 'Inflammation'],
+  ALOX15: ['Inflammation', 'Oxidative Stress'],
+  GPR35: ['Inflammation'],
+  HPGD: ['Inflammation'],
+  CYP2C9: ['Oxidative Stress'],
 };
 
 export function classifyGene(geneSymbol) {

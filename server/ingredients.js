@@ -16,14 +16,6 @@ export const INGREDIENTS = [
     lookupName: 'COL1A1',
   },
   {
-    id: 'marine-pufas',
-    name: 'Marine PUFAs (EPA/DHA)',
-    kind: 'compound',
-    prep: 'Lipid extraction (Folch/Bligh-Dyer), separate from protein fraction',
-    role: 'Bioactive nano-inclusion',
-    lookupName: 'docosahexaenoic acid',
-  },
-  {
     id: 'lmw-ha',
     name: 'LMW-Hyaluronic Acid',
     kind: 'compound',
@@ -56,19 +48,19 @@ export const INGREDIENTS = [
     lookupName: 'baicalein',
   },
   {
-    id: 'astragalus-iv',
-    name: 'Astragalus (AS-IV)',
-    kind: 'compound',
-    prep: 'Botanical extract',
-    role: 'Phytochemical modulator',
-    lookupName: 'astragaloside IV',
-  },
-  {
     id: 'ag-nanoparticles',
     name: 'Ag nanoparticles (low-dose)',
     kind: 'compound',
     prep: 'In-situ reduction or pre-formed AgNP, sub-cytotoxic loading',
     role: 'Antimicrobial',
     lookupName: 'silver',
+  },
+  {
+    id: 'deferoxamine',
+    name: 'Deferoxamine',
+    kind: 'compound',
+    prep: 'Purified iron-chelator, incorporated at sub-cytotoxic dose',
+    role: 'Angiogenic modulator (HIF-1α stabilizer)',
+    lookupName: 'deferoxamine',
   },
 ];
