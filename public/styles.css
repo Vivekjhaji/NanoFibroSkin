@@ -96,3 +96,40 @@ td:hover { cursor: pointer; background: var(--card-bg); }
   cursor: pointer;
   padding: 4px 10px;
 }
+
+#network-canvas {
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  background: var(--card-bg);
+  max-width: 100%;
+  height: auto;
+}
+#network-empty-state {
+  color: var(--ink-soft);
+  font-size: 14px;
+}
+#ingredient-select {
+  font-size: 14px;
+  padding: 4px 8px;
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+  background: var(--card-bg);
+  color: var(--ink);
+}
+#network-status { font-size: 13px; color: var(--ink-soft); margin-left: 12px; }
+#network-detail-section {
+  margin-top: 24px;
+  max-width: 700px;
+  background: var(--card-bg);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  padding: 16px 20px;
+}
+#network-close-detail {
+  float: right;
+  background: none;
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+  cursor: pointer;
+  padding: 4px 10px;
+}
