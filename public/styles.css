@@ -96,3 +96,75 @@ td:hover { cursor: pointer; background: var(--card-bg); }
   cursor: pointer;
   padding: 4px 10px;
 }
+
+#network-canvas {
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  background: var(--card-bg);
+  max-width: 100%;
+  height: auto;
+}
+#network-canvas[hidden] { display: none; }
+#network-empty-state {
+  color: var(--ink-soft);
+  font-size: 14px;
+}
+#ingredient-select {
+  font-size: 14px;
+  padding: 4px 8px;
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+  background: var(--card-bg);
+  color: var(--ink);
+}
+#network-status { font-size: 13px; color: var(--ink-soft); margin-left: 12px; }
+#network-detail-section {
+  margin-top: 24px;
+  max-width: 700px;
+  background: var(--card-bg);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  padding: 16px 20px;
+}
+#network-close-detail {
+  float: right;
+  background: none;
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+  cursor: pointer;
+  padding: 4px 10px;
+}
+
+:root {
+  --path-inflammation: #b8623f;
+  --path-oxidative: #c9a227;
+  --path-angiogenesis: #4a7a96;
+  --path-infection: #8b4a9c;
+  --path-ecm: #5f7052;
+  --path-unclassified: #8a8578;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --path-inflammation: #d68a68;
+    --path-oxidative: #e0c358;
+    --path-angiogenesis: #7aa8c2;
+    --path-infection: #b57ac4;
+    --path-ecm: #8fa47c;
+    --path-unclassified: #a8a396;
+  }
+}
+:root[data-theme="dark"] {
+  --path-inflammation: #d68a68; --path-oxidative: #e0c358; --path-angiogenesis: #7aa8c2;
+  --path-infection: #b57ac4; --path-ecm: #8fa47c; --path-unclassified: #a8a396;
+}
+:root[data-theme="light"] {
+  --path-inflammation: #b8623f; --path-oxidative: #c9a227; --path-angiogenesis: #4a7a96;
+  --path-infection: #8b4a9c; --path-ecm: #5f7052; --path-unclassified: #8a8578;
+}
+
+.node-ingredient { fill: var(--accent); stroke: var(--ink); stroke-width: 2px; }
+.node-target { stroke: var(--ink-soft); stroke-width: 1px; }
+.node-interactor { fill: var(--rule); stroke: var(--ink-soft); stroke-width: 1px; }
+.node-label { fill: var(--ink); font-size: 10px; pointer-events: none; }
+.graph-link { stroke: var(--ink-soft); }
+.node-target, .node-interactor, .node-ingredient { cursor: pointer; }
