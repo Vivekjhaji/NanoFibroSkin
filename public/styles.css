@@ -104,6 +104,7 @@ td:hover { cursor: pointer; background: var(--card-bg); }
   max-width: 100%;
   height: auto;
 }
+#network-canvas[hidden] { display: none; }
 #network-empty-state {
   color: var(--ink-soft);
   font-size: 14px;

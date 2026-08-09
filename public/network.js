@@ -75,6 +75,7 @@ export function buildGraphData(detail) {
 
 const svg = typeof document !== 'undefined' ? d3.select('#network-canvas') : null;
 const emptyState = typeof document !== 'undefined' ? document.getElementById('network-empty-state') : null;
+let currentSimulation = null;
 
 const PATHOLOGY_COLOR_VAR = {
   Inflammation: '--path-inflammation',
@@ -101,11 +102,13 @@ function renderGraph(graphData) {
   const width = 900;
   const height = 600;
 
+  if (currentSimulation) currentSimulation.stop();
+
   svg.selectAll('*').remove();
   svg.attr('hidden', null);
   emptyState.hidden = true;
 
-  const simulation = d3.forceSimulation(nodes)
+  currentSimulation = d3.forceSimulation(nodes)
     .force('link', d3.forceLink(links).id((d) => d.id).distance(60))
     .force('charge', d3.forceManyBody().strength(-120))
     .force('center', d3.forceCenter(width / 2, height / 2))
@@ -136,7 +139,7 @@ function renderGraph(graphData) {
     .attr('dy', -12)
     .text((d) => d.label);
 
-  simulation.on('tick', () => {
+  currentSimulation.on('tick', () => {
     link
       .attr('x1', (d) => d.source.x)
       .attr('y1', (d) => d.source.y)
