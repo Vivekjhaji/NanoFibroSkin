@@ -1,7 +1,18 @@
 let ingredientsById = {};
 
+let currentDetail = null; // full GET /api/ingredients/:id response for the selected ingredient
+
+function escapeHtml(str) {
+  const div = document.createElement('div');
+  div.textContent = str ?? '';
+  return div.innerHTML;
+}
+
 const selectEl = typeof document !== 'undefined' ? document.getElementById('ingredient-select') : null;
 const statusEl = typeof document !== 'undefined' ? document.getElementById('network-status') : null;
+const detailSection = typeof document !== 'undefined' ? document.getElementById('network-detail-section') : null;
+const detailContent = typeof document !== 'undefined' ? document.getElementById('network-detail-content') : null;
+const closeDetailBtn = typeof document !== 'undefined' ? document.getElementById('network-close-detail') : null;
 
 async function loadIngredientList() {
   const res = await fetch('/api/ingredients');
@@ -151,7 +162,48 @@ if (selectEl) {
       statusEl.textContent = `Error: ${detail.error}`;
       return;
     }
+    currentDetail = detail;
     const graphData = buildGraphData(detail);
     renderGraph(graphData);
+    detailSection.hidden = true;
+  });
+}
+
+function showNodeDetail(node) {
+  if (node.kind === 'ingredient') {
+    detailContent.innerHTML = `
+      <h2>${escapeHtml(currentDetail.name)}</h2>
+      <p><strong>Prep:</strong> ${escapeHtml(currentDetail.prep)}</p>
+      <p><strong>Role:</strong> ${escapeHtml(currentDetail.role)}</p>
+    `;
+  } else if (node.kind === 'target') {
+    const target = currentDetail.targets.find((t) => t.geneSymbol === node.label);
+    const pathologyList = target.pathologies.length
+      ? target.pathologies.map(escapeHtml).join(', ')
+      : 'no known pathology link';
+    const interactionTypes = target.interactionTypes.map(escapeHtml).join(', ') || 'unspecified';
+    detailContent.innerHTML = `
+      <h2>${escapeHtml(target.geneSymbol)}${target.uniprot ? ` — ${escapeHtml(target.uniprot.proteinName)}` : ''}</h2>
+      <p><strong>Interaction:</strong> ${interactionTypes}${target.score !== null ? ` (score ${target.score.toFixed(2)})` : ''}</p>
+      <p><strong>Pathology:</strong> ${pathologyList}</p>
+    `;
+  } else {
+    // interactor node — find its score against whichever target(s) link to it
+    const scores = currentDetail.targets
+      .flatMap((t) => t.stringPartners.filter((p) => p.partnerName === node.label).map((p) => ({ via: t.geneSymbol, score: p.score })))
+      .map((s) => `${escapeHtml(s.via)} (${s.score.toFixed(2)})`)
+      .join(', ');
+    detailContent.innerHTML = `
+      <h2>${escapeHtml(node.label)}</h2>
+      <p><strong>STRING interaction confidence:</strong> ${scores}</p>
+      <p class="focus-note">This node has no direct DGIdb evidence of its own — it is a known STRING interaction partner of the target(s) listed above.</p>
+    `;
+  }
+  detailSection.hidden = false;
+}
+
+if (closeDetailBtn) {
+  closeDetailBtn.addEventListener('click', () => {
+    detailSection.hidden = true;
   });
 }
